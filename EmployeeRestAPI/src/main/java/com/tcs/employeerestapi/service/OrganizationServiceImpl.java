@@ -35,17 +35,17 @@ public class OrganizationServiceImpl implements OrganizationService {
 	OrganizationRepository organizationRepository;
 
 	@Override
-	public String addOrganization(Organization organization) {
+	public Organization addOrganization(Organization organization) {
 		// TODO Auto-generated method stub
 		Organization organization2 = null;
 		try
 		{
 			organization2 = organizationRepository.save(organization);
-			return "success";
+			return organization2;
 		}catch(Exception e)
 		{
 			e.printStackTrace();
-			return "fail";
+			return null;
 		}
 	}
 
@@ -65,21 +65,21 @@ public class OrganizationServiceImpl implements OrganizationService {
 	}
 
 	@Override
-	public String deleteOrganization(int id) {
+	public void deleteOrganization(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		organizationRepository.deleteById(id);
 	}
 
 	@Override
 	public Optional<Organization> findById(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		return organizationRepository.findById(id);
 	}
 
 	@Override
 	public Optional<List<Organization>> getOrganization() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(organizationRepository.findAll());
 	}
 
 	@Override

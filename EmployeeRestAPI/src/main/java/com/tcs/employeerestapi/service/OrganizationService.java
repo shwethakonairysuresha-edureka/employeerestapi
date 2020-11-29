@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.tcs.employeerestapi.model.Organization;
 
 public interface OrganizationService {
-	public String addOrganization(Organization organization);
+	public Organization addOrganization(Organization organization);
 	public String updateOrganization(Organization organization);
-	public String deleteOrganization(int id);
+	public void deleteOrganization(int id);
 	public Optional<Organization> findById(int id);
 	public Optional<List<Organization>> getOrganization();
 	public Optional<List<Organization>> findByOrganizationId(int id);

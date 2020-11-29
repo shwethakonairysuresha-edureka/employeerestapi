@@ -6,12 +6,12 @@ import java.util.Optional;
 import com.tcs.employeerestapi.model.Department;
 
 public interface DepartmentService {
-	public String addDepartment(Department department);
+	public Department addDepartment(Department department);
 	public String updateDepartment(Department department);
-	public String deleteDepartment(int id);
+	public void deleteDepartment(int id);
 	public Optional<Department> findById(int id);
 	public Optional<List<Department>> getDepartments();
 	public Optional<List<Department>> findByOrganizationId(int id);
 	
-	public String registerDepartment(Department department);
+	public void registerDepartment(Department department);
 }

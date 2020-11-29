@@ -39,17 +39,17 @@ public class DepartmentServiceImpl implements DepartmentService {
 	OrganizationRepository organizationRepository;
 
 	@Override
-	public String addDepartment(Department department) {
+	public Department addDepartment(Department department) {
 		// TODO Auto-generated method stub
 		Department department2 = null;
 		try
 		{
 			department2 = departmentRepository.save(department);
-			return "success";
+			return department2;
 		}catch(Exception e)
 		{
 			e.printStackTrace();
-			return "fail";
+			return null;
 		}
 	}
 
@@ -69,21 +69,21 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public String deleteDepartment(int id) {
+	public void deleteDepartment(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		departmentRepository.deleteById(id);
 	}
 
 	@Override
 	public Optional<Department> findById(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		return departmentRepository.findById(id);
 	}
 
 	@Override
 	public Optional<List<Department>> getDepartments() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(departmentRepository.findAll());
 	}
 
 	@Override
@@ -93,14 +93,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public String registerDepartment(Department department) {
+	public void registerDepartment(Department department) {
 		// TODO Auto-generated method stub
-		if(departmentRepository.existsByName(department.getName())) {
-			return "existing department";
+		//if(departmentRepository.existsByName(department.getName())) {
+		//	return "existing department";
+		    Department department2 = departmentRepository.save(department);
 		}
 		
-		Department department2 = departmentRepository.save(department);
-		return department2!=null?"success":"fail";
+		//Department department2 = departmentRepository.save(department);
+		//return department2!=null?"success":"fail";
 	}
-
-}
