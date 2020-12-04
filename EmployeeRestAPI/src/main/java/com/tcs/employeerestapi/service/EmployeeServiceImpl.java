@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.employeerestapi.model.Employee;
-import com.tcs.employeerestapi.repository.DepartmentRepository;
 import com.tcs.employeerestapi.repository.EmployeeRepository;
 
 @Service
@@ -34,9 +33,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Autowired
 	EmployeeRepository employeeRepository;
-	
-	@Autowired
-	DepartmentRepository departmentRepository;
 	
 	@Override
 	public Employee addEmployee(Employee employee) {

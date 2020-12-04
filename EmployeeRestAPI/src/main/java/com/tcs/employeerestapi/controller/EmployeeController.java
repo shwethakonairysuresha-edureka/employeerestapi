@@ -1,16 +1,26 @@
 package com.tcs.employeerestapi.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.tcs.employeerestapi.exception.ResourceNotFoundException;
 import com.tcs.employeerestapi.model.Employee;
 import com.tcs.employeerestapi.service.EmployeeService;
 
@@ -28,19 +38,39 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("/{id}")
-	public Employee getEmployeeById(@PathVariable("id") int id) {
-		return employeeService.findById(id).get();
+	public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") int id) throws ResourceNotFoundException
+	{
+		Employee employee = employeeService.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee not found"));
+		return ResponseEntity.ok().body(employee);
 	}
 	
 	@DeleteMapping("/{id}")
-	public String deleteEmployeeById(@PathVariable int id) {
+	public Map<String, Boolean> deleteEmployeeById(@PathVariable int id) throws ResourceNotFoundException
+	{
+		Employee employee = employeeService.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee not found"));
 		employeeService.deleteEmployee(id);
-		return "success";
+		HashMap<String, Boolean> hashMap = new HashMap<>();
+		hashMap.put("deleted", Boolean.TRUE);
+		return hashMap;
 	}
 	
-	@PostMapping("/create")
-	public Employee createEmployee(@RequestBody Employee employee)
+	@PostMapping
+	public ResponseEntity<?> createEmployee(@RequestBody Employee employee,UriComponentsBuilder uriComponentsBuilder,HttpServletRequest request)
 	{
-		return 	employeeService.addEmployee(employee);
+		Employee employee2 = employeeService.addEmployee(employee);
+		UriComponents uriComponents = uriComponentsBuilder
+				.path(request.getRequestURI()+"/{id}")
+				.buildAndExpand(employee2.getId());
+		return ResponseEntity.created(uriComponents.toUri()).body(employee2);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Integer id,
+			@Valid @RequestBody Employee employee ) throws ResourceNotFoundException {
+		Employee employee2 = employeeService.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("Product not found"));
+		employee.setId(id);
+		Employee employee3 =employeeService.addEmployee(employee);		
+		return ResponseEntity.ok(employee3);
 	}
 }

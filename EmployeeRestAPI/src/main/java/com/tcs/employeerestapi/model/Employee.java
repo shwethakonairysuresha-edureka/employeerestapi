@@ -31,7 +31,4 @@ public class Employee {
 	private String name;
 	private int age;
 	private String position;
-	
-	@OneToMany(mappedBy = "employee" , fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
-	private Set<Department> departments = new HashSet<>();	
 }
